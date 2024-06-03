@@ -1,1 +1,1 @@
-worker: python main.py
+worker: poetry install && poetry run python main.py

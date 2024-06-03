@@ -40,6 +40,8 @@ This project is a Telegram bot that interacts with OpenAI's GPT-4 (ChatGPT) to p
 4. Create a `.env` file in the project directory and add your Telegram bot token and OpenAI API key:
     ```env
     TELEGRAM_TOKEN=your-telegram-token
+    OPEN_AI_API_KEY=your-open-ai-key
+    ORGANIZATION_KEY=your-organization-key
     ```
 
 ## Configuration

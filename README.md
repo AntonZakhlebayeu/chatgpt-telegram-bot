@@ -17,9 +17,8 @@ This project is a Telegram bot that interacts with OpenAI's GPT-4 (ChatGPT) to p
 ## Installation
 
 ### Prerequisites
-- Python 3.8+
+- Python 3.10+
 - A Telegram bot token (obtain from [BotFather](https://core.telegram.org/bots#botfather))
-- OpenAI API key (obtain from [OpenAI](https://platform.openai.com/))
 
 ### Steps for run
 1. Clone the repository:
@@ -41,7 +40,6 @@ This project is a Telegram bot that interacts with OpenAI's GPT-4 (ChatGPT) to p
 4. Create a `.env` file in the project directory and add your Telegram bot token and OpenAI API key:
     ```env
     TELEGRAM_TOKEN=your-telegram-token
-    OPENAI_API_KEY=your-openai-api-key
     ```
 
 ## Configuration

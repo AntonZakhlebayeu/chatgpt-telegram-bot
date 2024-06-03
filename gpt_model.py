@@ -2,7 +2,6 @@ import logging
 
 import g4f
 from g4f.client import Client
-from g4f.Provider import Liaobots
 
 from exceptions import EmptyContentResponseError, ProviderRequestError
 
@@ -33,9 +32,7 @@ class GPTModel(metaclass=GPTModelBase):
     def __init__(self):
         """initialize client with specific GPT provider
         this one works fine in tested contexts"""
-        self.__client_gpt4 = Client(
-            provider=Liaobots,
-        )
+        self.__client_gpt4 = Client()
         logger.info("GPT model initialized")
 
     def ask_gpt4(self, prompt: str, user_messages: list = None) -> str:
@@ -45,12 +42,12 @@ class GPTModel(metaclass=GPTModelBase):
             if user_messages:
                 user_messages.append({"role": "user", "content": prompt})
                 response = self.__client_gpt4.chat.completions.create(
-                    model=g4f.models.gpt_35_turbo,
+                    model=g4f.models.default,
                     messages=user_messages,
                 )
             else:
                 response = self.__client_gpt4.chat.completions.create(
-                    model=g4f.models.gpt_35_turbo,
+                    model=g4f.models.default,
                     messages=[{"role": "user", "content": prompt}],
                 )
             logger.info("response from GPT 4 provider recieved")

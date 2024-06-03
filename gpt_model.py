@@ -1,9 +1,9 @@
 import logging
 
-import g4f
-from g4f.client import Client
+from openai import OpenAI
 
 from exceptions import EmptyContentResponseError, ProviderRequestError
+from telegram_client.config import config
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(filename="gpt_model.log")
@@ -32,7 +32,10 @@ class GPTModel(metaclass=GPTModelBase):
     def __init__(self):
         """initialize client with specific GPT provider
         this one works fine in tested contexts"""
-        self.__client_gpt4 = Client()
+        self.__client_gpt4 = OpenAI(
+            api_key=config.get("OPEN_AI_API_KEY"),
+            organization=config.get("ORGANIZATION_KEY"),
+        )
         logger.info("GPT model initialized")
 
     def ask_gpt4(self, prompt: str, user_messages: list = None) -> str:
@@ -42,12 +45,12 @@ class GPTModel(metaclass=GPTModelBase):
             if user_messages:
                 user_messages.append({"role": "user", "content": prompt})
                 response = self.__client_gpt4.chat.completions.create(
-                    model=g4f.models.default,
+                    model="gpt-3.5-turbo",
                     messages=user_messages,
                 )
             else:
                 response = self.__client_gpt4.chat.completions.create(
-                    model=g4f.models.default,
+                    model="gpt-3.5-turbo",
                     messages=[{"role": "user", "content": prompt}],
                 )
             logger.info("response from GPT 4 provider recieved")

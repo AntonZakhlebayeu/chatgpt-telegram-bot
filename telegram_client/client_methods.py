@@ -89,9 +89,7 @@ async def handle_text_reply_chatgpt_4(
 
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text=f"""Response from gpt provider:
-
-{response_from_gpt}""",
+        text=response_from_gpt,
         reply_markup=keyboard,
         parse_mode="Markdown",
     )

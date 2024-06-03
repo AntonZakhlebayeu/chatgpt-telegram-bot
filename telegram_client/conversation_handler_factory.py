@@ -1,6 +1,7 @@
 from typing import Dict, List
 
-from telegram.ext import CallbackQueryHandler, CommandHandler, ConversationHandler
+from telegram.ext import (CallbackQueryHandler, CommandHandler,
+                          ConversationHandler)
 
 
 class ConversationHandlerFactory:

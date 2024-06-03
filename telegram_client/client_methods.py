@@ -6,31 +6,21 @@ from telegram.ext import ContextTypes
 from database_repo_telegram.client import db_client
 from exceptions import EmptyContentResponseError, ProviderRequestError
 from gpt_model import GPTModel
-from telegram_client.constants import (
-    ABOUT_PROJECT,
-    ABOUT_PROJECT_TEXT,
-    ASK_GPT,
-    ASK_GPT_BUTTON_TEXT,
-    ASK_GPT_TEXT,
-    AWAITING_USER_MESSAGE,
-    BACK_TO_MAIN_MENU,
-    BACK_TO_MAIN_MENU_BUTTON_TEXT,
-    BACK_TO_SELECTION,
-    BACK_TO_SELECTION_BUTTON_TEXT,
-    CHAT_GPT_4_BUTTON_TEXT,
-    CHAT_GPT_4_TEXT,
-    CLEAR_CONVERSATION,
-    CONVERSATION_CLEARED_TEXT,
-    GPT_4,
-    MAIN_MENU,
-    MAIN_MENU_BUTTON_TEXT,
-    MAIN_MENU_TEXT,
-    SELECTING_ACTION,
-    SELECTING_VERSION,
-    WELCOME_MESSAGE,
-    WELCOME_MESSAGE_BUTTON_TEXT,
-    WELCOME_MESSAGE_TEXT,
-)
+from telegram_client.constants import (ABOUT_PROJECT, ABOUT_PROJECT_TEXT,
+                                       ASK_GPT, ASK_GPT_BUTTON_TEXT,
+                                       ASK_GPT_TEXT, AWAITING_USER_MESSAGE,
+                                       BACK_TO_MAIN_MENU,
+                                       BACK_TO_MAIN_MENU_BUTTON_TEXT,
+                                       BACK_TO_SELECTION,
+                                       BACK_TO_SELECTION_BUTTON_TEXT,
+                                       CHAT_GPT_4_BUTTON_TEXT, CHAT_GPT_4_TEXT,
+                                       CLEAR_CONVERSATION,
+                                       CONVERSATION_CLEARED_TEXT, GPT_4,
+                                       MAIN_MENU, MAIN_MENU_BUTTON_TEXT,
+                                       MAIN_MENU_TEXT, SELECTING_ACTION,
+                                       SELECTING_VERSION, WELCOME_MESSAGE,
+                                       WELCOME_MESSAGE_BUTTON_TEXT,
+                                       WELCOME_MESSAGE_TEXT)
 from telegram_client.utils import generate_keyboard_buttons
 
 logger = logging.getLogger(__name__)

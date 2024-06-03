@@ -43,6 +43,8 @@ class TelegramClient:
         self.__application = (
             Application.builder()
             .token(config.get("TELEGRAM_TOKEN"))
+            .read_timeout(30)
+            .write_timeout(30)
             .persistence(persistence)
             .build()
         )

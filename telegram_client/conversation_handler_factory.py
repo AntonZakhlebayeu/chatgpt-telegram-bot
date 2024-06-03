@@ -1,10 +1,11 @@
 from typing import Dict, List
 
-from telegram.ext import (CallbackQueryHandler, CommandHandler,
-                          ConversationHandler)
+from telegram.ext import CallbackQueryHandler, CommandHandler, ConversationHandler
 
 
 class ConversationHandlerFactory:
+    """This class handles the ConversationHandler creation"""
+
     def __init__(self, persistent: bool = False):
         self.__persistent = persistent
 

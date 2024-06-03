@@ -20,7 +20,7 @@ class DatabaseClient:
     def __init__(self) -> None:
         self.session = self._Session()
 
-    def add_user(self, user_id: str) -> None:
+    def add_user(self, user_id: int) -> None:
         existing_user = self.session.query(User).filter_by(id=user_id).first()
         if existing_user:
             return
@@ -29,24 +29,24 @@ class DatabaseClient:
         self.session.add(user)
         self.session.commit()
 
-    def delete_user(self, user_id: str) -> None:
+    def delete_user(self, user_id: int) -> None:
         user = self.session.query(User).filter_by(id=user_id).first()
         if user:
             self.session.delete(user)
             self.session.commit()
 
-    def add_message(self, user_id: str, role: str, content: str) -> None:
+    def add_message(self, user_id: int, role: str, content: str) -> None:
         message = Message(user_id=user_id, role=role, content=content)
         self.session.add(message)
         self.session.commit()
 
-    def delete_messages_by_user_id(self, user_id: str) -> None:
+    def delete_messages_by_user_id(self, user_id: int) -> None:
         messages = self.session.query(Message).filter_by(user_id=user_id).all()
         for message in messages:
             self.session.delete(message)
         self.session.commit()
 
-    def get_user_messages(self, user_id: str) -> list[Message]:
+    def get_user_messages(self, user_id: int) -> list[Message]:
         user = self.session.query(User).filter_by(id=user_id).first()
         if user:
             return [{"role": msg.role, "content": msg.content} for msg in user.messages]

@@ -1,7 +1,9 @@
 from telegram import InlineKeyboardButton
 
 
-def generate_keyboard_buttons(options, callback_data=None, urls=None):
+def generate_keyboard_buttons(
+    options: list, callback_data: list = None, urls: list = None
+) -> list:
     if not callback_data:
         callback_data = [None] * len(options)
 
@@ -32,8 +34,8 @@ def generate_keyboard_buttons(options, callback_data=None, urls=None):
 
 
 def generate_column_oriented_buttons(
-    options, callback_data=None, urls=None, columns: int = 2
-):
+    options: list, callback_data: list = None, urls: list = None, columns: int = 2
+) -> list:
     if not callback_data:
         callback_data = [None] * len(options)
 

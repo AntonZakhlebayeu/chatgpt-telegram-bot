@@ -6,21 +6,31 @@ from telegram.ext import ContextTypes
 from database_repo_telegram.client import db_client
 from exceptions import EmptyContentResponseError, ProviderRequestError
 from gpt_model import GPTModel
-from telegram_client.constants import (ABOUT_PROJECT, ABOUT_PROJECT_TEXT,
-                                       ASK_GPT, ASK_GPT_BUTTON_TEXT,
-                                       ASK_GPT_TEXT, AWAITING_USER_MESSAGE,
-                                       BACK_TO_MAIN_MENU,
-                                       BACK_TO_MAIN_MENU_BUTTON_TEXT,
-                                       BACK_TO_SELECTION,
-                                       BACK_TO_SELECTION_BUTTON_TEXT,
-                                       CHAT_GPT_4_BUTTON_TEXT, CHAT_GPT_4_TEXT,
-                                       CLEAR_CONVERSATION,
-                                       CONVERSATION_CLEARED_TEXT, GPT_4,
-                                       MAIN_MENU, MAIN_MENU_BUTTON_TEXT,
-                                       MAIN_MENU_TEXT, SELECTING_ACTION,
-                                       SELECTING_VERSION, WELCOME_MESSAGE,
-                                       WELCOME_MESSAGE_BUTTON_TEXT,
-                                       WELCOME_MESSAGE_TEXT)
+from telegram_client.constants import (
+    ABOUT_PROJECT,
+    ABOUT_PROJECT_TEXT,
+    ASK_GPT,
+    ASK_GPT_BUTTON_TEXT,
+    ASK_GPT_TEXT,
+    AWAITING_USER_MESSAGE,
+    BACK_TO_MAIN_MENU,
+    BACK_TO_MAIN_MENU_BUTTON_TEXT,
+    BACK_TO_SELECTION,
+    BACK_TO_SELECTION_BUTTON_TEXT,
+    CHAT_GPT_4_BUTTON_TEXT,
+    CHAT_GPT_4_TEXT,
+    CLEAR_CONVERSATION,
+    CONVERSATION_CLEARED_TEXT,
+    GPT_4,
+    MAIN_MENU,
+    MAIN_MENU_BUTTON_TEXT,
+    MAIN_MENU_TEXT,
+    SELECTING_ACTION,
+    SELECTING_VERSION,
+    WELCOME_MESSAGE,
+    WELCOME_MESSAGE_BUTTON_TEXT,
+    WELCOME_MESSAGE_TEXT,
+)
 from telegram_client.utils import generate_keyboard_buttons
 
 logger = logging.getLogger(__name__)
@@ -30,7 +40,7 @@ logging.getLogger().setLevel(logging.INFO)
 
 async def clear_conversation_handler(
     update: Update, context: ContextTypes.DEFAULT_TYPE
-) -> str:
+) -> int:
     db_client.delete_messages_by_user_id(update.effective_chat.id)
 
     keyboard = InlineKeyboardMarkup(
@@ -51,7 +61,7 @@ async def clear_conversation_handler(
 
 async def handle_text_reply_chatgpt_4(
     update: Update, context: ContextTypes.DEFAULT_TYPE
-) -> str:
+) -> int:
     user_input = update.message.text
     keyboard = InlineKeyboardMarkup(
         generate_keyboard_buttons(
@@ -101,7 +111,7 @@ async def handle_text_reply_chatgpt_4(
     return AWAITING_USER_MESSAGE
 
 
-async def chat_gpt_4(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+async def chat_gpt_4(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     keyboard = InlineKeyboardMarkup(
         generate_keyboard_buttons(
             CHAT_GPT_4_BUTTON_TEXT,
@@ -118,7 +128,7 @@ async def chat_gpt_4(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     return AWAITING_USER_MESSAGE
 
 
-async def ask_gpt_nested(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+async def ask_gpt_nested(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     keyboard = InlineKeyboardMarkup(
         generate_keyboard_buttons(
             ASK_GPT_BUTTON_TEXT,
@@ -135,7 +145,7 @@ async def ask_gpt_nested(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     return BACK_TO_SELECTION
 
 
-async def ask_gpt(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+async def ask_gpt(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     keyboard = InlineKeyboardMarkup(
         generate_keyboard_buttons(
             ASK_GPT_BUTTON_TEXT,
@@ -152,7 +162,7 @@ async def ask_gpt(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     return SELECTING_VERSION
 
 
-async def about_the_project(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+async def about_the_project(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     keyboard = InlineKeyboardMarkup(
         generate_keyboard_buttons(
             BACK_TO_MAIN_MENU_BUTTON_TEXT,
@@ -167,7 +177,7 @@ async def about_the_project(update: Update, context: ContextTypes.DEFAULT_TYPE) 
     )
 
 
-async def main_menu_nested(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+async def main_menu_nested(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     keyboard = InlineKeyboardMarkup(
         generate_keyboard_buttons(
             MAIN_MENU_BUTTON_TEXT,
@@ -184,7 +194,7 @@ async def main_menu_nested(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     return BACK_TO_MAIN_MENU
 
 
-async def main_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+async def main_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     keyboard = InlineKeyboardMarkup(
         generate_keyboard_buttons(
             MAIN_MENU_BUTTON_TEXT,
@@ -201,7 +211,7 @@ async def main_menu(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
     return SELECTING_ACTION
 
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     keyboard = InlineKeyboardMarkup(
         generate_keyboard_buttons(
             WELCOME_MESSAGE_BUTTON_TEXT,
@@ -209,7 +219,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> str:
         )
     )
 
-    print(
+    logger.info(
         f"Just started user {update.effective_user.id}, with username {update.message.from_user.username}"
     )
     db_client.add_user(update.effective_user.id)

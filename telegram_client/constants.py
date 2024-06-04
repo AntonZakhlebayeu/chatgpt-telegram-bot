@@ -31,24 +31,33 @@ It uses the different GPT providers to generate responses to your queries.
 Whether you need assistance, advice, or just want to have a friendly chat, this ChatGPT bot is here to help!
 This project aims to provide the free access to ChatGPT for everyone in a couple of steps."""
 
-ASK_GPT_TEXT = """Here you can access GPT 4
+ASK_GPT_TEXT = """Here you can access GPT 3.5, GPT 4o and GPT 4
+
+🌟 GPT-3.5: GPT-3.5 is a highly capable model that continues the legacy of the GPT-3 series with significant improvements in understanding and generating human-like text. It's perfect for a wide range of applications, from casual conversation to more detailed and nuanced interactions.
+You have unlimited requests per day for ChatGPT 3.5
+
+🌟 GPT-4o: GPT-4o, a variant of GPT-4, offers optimized performance for specific tasks, ensuring faster response times and efficiency. It combines the robustness of GPT-4 with tailored enhancements for specialized use cases, making it an excellent choice for focused and high-demand applications.
+You have only 10 request per 4 hours for ChatGPT 4o, then you are switched to ChatGPT 3.5
 
 🌟 GPT-4: OpenAI latest upgrade, GPT-4, brings even more advanced features and improved performance to the table. With enhanced language comprehension and response quality, GPT-4 is ideal for tackling complex queries and generating more accurate responses.
+You have only 3 request per 5 hours for ChatGPT 4, then you are switched to ChatGPT 3.5
 
 Choose the model that best suits your needs, and let ChatGPT assist you in your journey!"""
 ASK_GPT_BUTTON_TEXT = [
+    "ChatGPT 3.5",
+    "ChatGPT 4o",
     "ChatGPT 4",
     "Back to main menu",
 ]
-GPT_4 = 23
+GPT_35 = 23
+GPT_4O = 24
+GPT_4 = 25
 SELECTING_VERSION = 3
 BACK_TO_SELECTION = 998
 
 AWAITING_USER_MESSAGE = 4
 CLEAR_CONVERSATION = 997
-CHAT_GPT_4_TEXT = """Send your message to ChatGPT 4. You can chatting with ChatGPT until you want it.
-If you want to clear your conversation just click the button \"Clear conversation\". After it you can start your conversation for the beginning."""
-CHAT_GPT_4_BUTTON_TEXT = [
+CHAT_GPT_BUTTON_TEXT = [
     "Clear conversation",
     "Back to selection",
 ]

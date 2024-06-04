@@ -1,4 +1,5 @@
 import logging
+from enum import StrEnum
 
 from openai import OpenAI
 
@@ -8,6 +9,12 @@ from telegram_client.config import config
 logger = logging.getLogger(__name__)
 logging.basicConfig(filename="gpt_model.log")
 logging.getLogger().setLevel(logging.INFO)
+
+
+class GPTVersion(StrEnum):
+    GPT_35_TURBO = "gpt-3.5-turbo"
+    GPT_4o = "gpt-4o"
+    GPT_4 = "gpt-4-turbo"
 
 
 class GPTModelBase(type):
@@ -32,42 +39,49 @@ class GPTModel(metaclass=GPTModelBase):
     def __init__(self):
         """initialize client with specific GPT provider
         this one works fine in tested contexts"""
-        self.__client_gpt4 = OpenAI(
+        self.__client_gpt = OpenAI(
             api_key=config.get("OPEN_AI_API_KEY"),
             organization=config.get("ORGANIZATION_KEY"),
         )
         logger.info("GPT model initialized")
 
-    def ask_gpt4(self, prompt: str, user_messages: list = None) -> str:
-        """Method for communicating with ChatGPT version 4"""
+    def ask_gpt(
+        self,
+        prompt: str,
+        user_messages: list = None,
+        version: GPTVersion = GPTVersion.GPT_35_TURBO,
+    ) -> str:
+        """Method for communicating with ChatGPT"""
         try:
-            logger.info("sending request to GPT 4 provider")
+            logger.info(f"sending request to GPT {version} provider")
             if user_messages:
                 user_messages.append({"role": "user", "content": prompt})
-                response = self.__client_gpt4.chat.completions.create(
-                    model="gpt-3.5-turbo",
+                response = self.__client_gpt.chat.completions.create(
+                    model=version,
                     messages=user_messages,
                 )
             else:
-                response = self.__client_gpt4.chat.completions.create(
-                    model="gpt-3.5-turbo",
+                response = self.__client_gpt.chat.completions.create(
+                    model=version,
                     messages=[{"role": "user", "content": prompt}],
                 )
-            logger.info("response from GPT 4 provider recieved")
+            logger.info(f"response from GPT {version} provider recieved")
 
             response_content = response.choices[0].message.content
 
             if response_content:
-                logger.info("Response from GPT 4 provider returned to the user")
+                logger.info(
+                    f"Response from GPT {version} provider returned to the user"
+                )
                 return response_content
             else:
-                logger.error("there is no message content from GPT 4 provider")
+                logger.error(f"there is no message content from GPT {version} provider")
                 raise EmptyContentResponseError(
                     "There is no response from ChatGPT, try to send the message again."
                 )
         except Exception as exc:
             logger.error(
-                f"There is an error with sending request to GPT 4 provider {repr(exc)}"
+                f"There is an error with sending request to GPT {version} provider {repr(exc)}"
             )
             raise ProviderRequestError(
                 f"There is an error with sending request to provider {repr(exc)}"

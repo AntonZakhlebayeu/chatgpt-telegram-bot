@@ -184,4 +184,4 @@ class TelegramClient:
         """Start up the telegram client"""
         self.__configure_telegram_client()
 
-        self.__application.run_polling(allowed_updates=Update.ALL_TYPES)
+        self.__application.run_polling(timeout=600, allowed_updates=Update.ALL_TYPES)

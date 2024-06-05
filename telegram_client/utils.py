@@ -3,13 +3,22 @@ from telegram.ext import ContextTypes
 
 from database_repo_telegram.client import db_client
 from gpt_model import GPTVersion
-
+from telegram_client.constants import GPT_4, GPT_4O, GPT_35
 
 GPT_VERSIONS = {
     GPTVersion.GPT_35_TURBO: "3.5",
     GPTVersion.GPT_4o: "4o",
     GPTVersion.GPT_4: "4",
 }
+
+
+def return_user_selection(selection: int) -> GPTVersion:
+    if selection == GPT_35:
+        return GPTVersion.GPT_35_TURBO
+    elif selection == GPT_4O:
+        return GPTVersion.GPT_4o
+    elif selection == GPT_4:
+        return GPTVersion.GPT_4
 
 
 def get_time_gpt_availability(user_id: int, version: GPTVersion) -> str:

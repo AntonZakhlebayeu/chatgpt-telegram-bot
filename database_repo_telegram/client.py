@@ -6,7 +6,6 @@ from sqlalchemy.orm import sessionmaker
 from database_repo_telegram.models import Base, Message, User
 from gpt_model import GPTVersion
 
-
 # TODO: Add logger for this file
 
 

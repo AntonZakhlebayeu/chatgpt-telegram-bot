@@ -18,8 +18,7 @@ from telegram.ext import (Application, CallbackQueryHandler, CommandHandler,
                           MessageHandler, PicklePersistence, filters)
 
 from telegram_client.client_methods import (about_the_project, ask_gpt,
-                                            ask_gpt_nested, chat_gpt_4,
-                                            chat_gpt_4o, chat_gpt_35,
+                                            ask_gpt_nested, chat_gpt,
                                             clear_conversation_handler,
                                             handle_text_reply_chatgpt,
                                             main_menu, main_menu_nested, start)
@@ -55,9 +54,11 @@ class TelegramClient:
 
     def __configure_telegram_client(self):
         """Configure telegram client using ConversationHandlerFactory"""
-        chat_gpt_4_handler = self.__conversation_handler_factory.create(
+        chat_gpt_handler = self.__conversation_handler_factory.create(
             entry_points=[
-                CallbackQueryHandler(chat_gpt_4, pattern=f"^{str(GPT_4)}$"),
+                CallbackQueryHandler(
+                    chat_gpt, pattern=f"^{str(GPT_35)}$|{str(GPT_4O)}$|{str(GPT_4)}$"
+                ),
             ],
             states={
                 AWAITING_USER_MESSAGE: [
@@ -75,53 +76,7 @@ class TelegramClient:
                 ),
             ],
             map_to_parent={BACK_TO_SELECTION: SELECTING_VERSION},
-            name="chat_gpt_4_conv",
-        )
-
-        chat_gpt_4o_handler = self.__conversation_handler_factory.create(
-            entry_points=[
-                CallbackQueryHandler(chat_gpt_4o, pattern=f"^{str(GPT_4O)}$"),
-            ],
-            states={
-                AWAITING_USER_MESSAGE: [
-                    MessageHandler(filters.TEXT, handle_text_reply_chatgpt)
-                ],
-            },
-            fallbacks=[
-                CallbackQueryHandler(
-                    ask_gpt_nested,
-                    pattern=f"^{str(BACK_TO_SELECTION)}$",
-                ),
-                CallbackQueryHandler(
-                    clear_conversation_handler,
-                    pattern=f"^{str(CLEAR_CONVERSATION)}$",
-                ),
-            ],
-            map_to_parent={BACK_TO_SELECTION: SELECTING_VERSION},
-            name="chat_gpt_4o_conv",
-        )
-
-        chat_gpt_35_handler = self.__conversation_handler_factory.create(
-            entry_points=[
-                CallbackQueryHandler(chat_gpt_35, pattern=f"^{str(GPT_35)}$"),
-            ],
-            states={
-                AWAITING_USER_MESSAGE: [
-                    MessageHandler(filters.TEXT, handle_text_reply_chatgpt)
-                ],
-            },
-            fallbacks=[
-                CallbackQueryHandler(
-                    ask_gpt_nested,
-                    pattern=f"^{str(BACK_TO_SELECTION)}$",
-                ),
-                CallbackQueryHandler(
-                    clear_conversation_handler,
-                    pattern=f"^{str(CLEAR_CONVERSATION)}$",
-                ),
-            ],
-            map_to_parent={BACK_TO_SELECTION: SELECTING_VERSION},
-            name="chat_gpt_35_conv",
+            name="chat_gpt_conv",
         )
 
         ask_gpt_handler = self.__conversation_handler_factory.create(
@@ -130,9 +85,7 @@ class TelegramClient:
             ],
             states={
                 SELECTING_VERSION: [
-                    chat_gpt_35_handler,
-                    chat_gpt_4o_handler,
-                    chat_gpt_4_handler,
+                    chat_gpt_handler,
                 ],
             },
             fallbacks=[

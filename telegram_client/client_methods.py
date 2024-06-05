@@ -24,7 +24,8 @@ from telegram_client.constants import (ABOUT_PROJECT, ABOUT_PROJECT_TEXT,
                                        WELCOME_MESSAGE_TEXT)
 from telegram_client.utils import (chat_with_gpt_text,
                                    generate_keyboard_buttons, get_gpt_version,
-                                   get_time_gpt_availability)
+                                   get_time_gpt_availability,
+                                   return_user_selection)
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(filename="gpt_model.log")
@@ -113,8 +114,12 @@ async def handle_text_reply_chatgpt(
     return AWAITING_USER_MESSAGE
 
 
-async def chat_gpt_4(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    context.user_data["gpt_version"] = GPTVersion.GPT_4
+async def chat_gpt(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    query = update.callback_query
+    await query.answer()
+    gpt_version = return_user_selection(int(query.data))
+
+    context.user_data["gpt_version"] = gpt_version
 
     keyboard = InlineKeyboardMarkup(
         generate_keyboard_buttons(
@@ -125,46 +130,7 @@ async def chat_gpt_4(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text=chat_with_gpt_text(GPTVersion.GPT_4),
-        reply_markup=keyboard,
-    )
-
-    return AWAITING_USER_MESSAGE
-
-
-async def chat_gpt_4o(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    print("entered 4o")
-    context.user_data["gpt_version"] = GPTVersion.GPT_4o
-
-    keyboard = InlineKeyboardMarkup(
-        generate_keyboard_buttons(
-            CHAT_GPT_BUTTON_TEXT,
-            callback_data=[CLEAR_CONVERSATION, BACK_TO_SELECTION],
-        )
-    )
-
-    await context.bot.send_message(
-        chat_id=update.effective_chat.id,
-        text=chat_with_gpt_text(GPTVersion.GPT_4o),
-        reply_markup=keyboard,
-    )
-
-    return AWAITING_USER_MESSAGE
-
-
-async def chat_gpt_35(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    context.user_data["gpt_version"] = GPTVersion.GPT_35_TURBO
-
-    keyboard = InlineKeyboardMarkup(
-        generate_keyboard_buttons(
-            CHAT_GPT_BUTTON_TEXT,
-            callback_data=[CLEAR_CONVERSATION, BACK_TO_SELECTION],
-        )
-    )
-
-    await context.bot.send_message(
-        chat_id=update.effective_chat.id,
-        text=chat_with_gpt_text(GPTVersion.GPT_35_TURBO),
+        text=chat_with_gpt_text(gpt_version),
         reply_markup=keyboard,
     )
 
